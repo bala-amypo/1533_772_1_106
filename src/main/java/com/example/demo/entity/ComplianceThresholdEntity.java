@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,13 +16,15 @@ public class ComplianceThresholdEntity {
     private Double minValue;
     private Double maxValue;
     private String severityLevel ;
-    public ComplianceThresholdEntity(Long id, String sensorType, Double minValue, Double maxValue,
-            String severityLevel) {
+    private  LocalDateTime createdAt;
+    public ComplianceThresholdEntity(Long id, String sensorType, Double minValue, Double maxValue, String severityLevel,
+            LocalDateTime createdAt) {
         this.id = id;
         this.sensorType = sensorType;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.severityLevel = severityLevel;
+        this.createdAt = createdAt;
     }
     public ComplianceThresholdEntity(){
         
@@ -55,6 +59,11 @@ public class ComplianceThresholdEntity {
     public void setSeverityLevel(String severityLevel) {
         this.severityLevel = severityLevel;
     }
-
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
 }
