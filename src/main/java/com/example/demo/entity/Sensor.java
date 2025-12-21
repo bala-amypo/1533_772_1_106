@@ -10,8 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 
 
@@ -29,7 +27,6 @@ public class Sensor {
     @Column(nullable = false)
     private String sensorType;
 
-    @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
@@ -38,7 +35,7 @@ public class Sensor {
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    @OneToMany(mappedBy = "sensor")
+
     private List<SensorReading> sensorReadings;
 
     public Sensor() {}
