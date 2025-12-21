@@ -27,7 +27,7 @@ public class ComplianceEvaluationServiceImpl
     @Autowired
     private ComplianceLogRepository complianceLogRepository;
 
-    // 1️⃣ evaluateReading
+
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
 
@@ -35,7 +35,7 @@ public class ComplianceEvaluationServiceImpl
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Reading not found"));
 
-        // ⚠️ since no relationship, using status as sensorType
+       
         String sensorType = reading.getStatus();
 
         ComplianceThreshold threshold =
@@ -49,7 +49,7 @@ public class ComplianceEvaluationServiceImpl
                         ? "SAFE"
                         : "UNSAFE";
 
-        // check existing logs
+      
         List<ComplianceLog> logs =
                 complianceLogRepository.findByReadingId(readingId);
 
@@ -67,13 +67,13 @@ public class ComplianceEvaluationServiceImpl
         return complianceLogRepository.save(log);
     }
 
-    // 2️⃣ getLogsByReading
+    
     @Override
     public List<ComplianceLog> getLogsByReading(Long readingId) {
         return complianceLogRepository.findByReadingId(readingId);
     }
 
-    // 3️⃣ getLog
+    
     @Override
     public ComplianceLog getLog(Long id) {
         return complianceLogRepository.findById(id)
