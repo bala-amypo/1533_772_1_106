@@ -29,29 +29,19 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
 
-        // 1. Reading fetch
         SensorReading reading = sensorReadingRepository.findById(readingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
 
-        // ✅ CORRECT: getSensorId()
-        Long sensorId = reading.getSensorId();
-
-        // 2. Threshold fetch (sensorId based)
-        ComplianceThreshold threshold = complianceThresholdRepository.findBySensorId(sensorId)
+        ComplianceThreshold threshold = complianceThresholdRepository
+                .findBySensorId(reading.getSensorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
 
-        // ✅ CORRECT: getReadingValue()
         Double value = reading.getReadingValue();
 
-        // 3. SAFE / UNSAFE logic
-        String status;
-        if (value >= threshold.getMinValue() && value <= threshold.getMaxValue()) {
-            status = "SAFE";
-        } else {
-            status = "UNSAFE";
-        }
+        String status = (value >= threshold.getMinValue() &&
+                         value <= threshold.getMaxValue())
+                         ? "SAFE" : "UNSAFE";
 
-        // 4. Existing log check
         List<ComplianceLog> logs = complianceLogRepository.findByReadingId(readingId);
 
         ComplianceLog log;
@@ -65,7 +55,6 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
         log.setReadingValue(value);
         log.setStatus(status);
 
-        // 5. Save log
         return complianceLogRepository.save(log);
     }
 
