@@ -3,7 +3,11 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.ComplianceLog;
 import com.example.demo.service.ComplianceEvaluationService;
@@ -21,13 +25,13 @@ public class ComplianceEvaluationController {
         return complianceEvaluationService.evaluateReading(readingId);
     }
 
-  
+
     @GetMapping("/reading/{readingId}")
     public List<ComplianceLog> getLogsByReading(@PathVariable Long readingId) {
         return complianceEvaluationService.getLogsByReading(readingId);
     }
 
-    }
+
     @GetMapping("/{id}")
     public ComplianceLog getLog(@PathVariable Long id) {
         return complianceEvaluationService.getLog(id);
