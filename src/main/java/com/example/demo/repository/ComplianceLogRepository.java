@@ -10,5 +10,6 @@ import com.example.demo.entity.ComplianceLog;
 @Repository
 public interface ComplianceLogRepository extends JpaRepository<ComplianceLog, Long> {
 
-    List<ComplianceLog> findBySensorReadingId(Long sensorReadingId);
+List<ComplianceLog> findBySensorReading_Id(Long id);
+
 }
