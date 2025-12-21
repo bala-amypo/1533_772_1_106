@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.entity.ComplianceThreshold;
 
-public interface ComplianceThresholdRepository 
+public interface ComplianceThresholdRepository
         extends JpaRepository<ComplianceThreshold, Long> {
 
     Optional<ComplianceThreshold> findBySensorId(Long sensorId);
