@@ -33,11 +33,11 @@ public class Location {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // No-arg constructor
+   
     public Location() {
     }
 
-    // Parameterized constructor
+    
     public Location(String locationName, String description, String region, LocalDateTime createdAt) {
         this.locationName = locationName;
         this.description = description;
