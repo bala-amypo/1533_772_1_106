@@ -11,7 +11,8 @@ import com.example.demo.repository.ComplianceThresholdRepository;
 import com.example.demo.service.ComplianceThresholdService;
 
 @Service
-public class ComplianceThresholdServiceImpl implements ComplianceThresholdService {
+public class ComplianceThresholdServiceImpl
+        implements ComplianceThresholdService {
 
     @Autowired
     private ComplianceThresholdRepository thresholdRepository;
@@ -22,9 +23,10 @@ public class ComplianceThresholdServiceImpl implements ComplianceThresholdServic
     }
 
     @Override
-    public ComplianceThreshold getBySensorId(Long sensorId) {
-        return thresholdRepository.findBySensorId(sensorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
+    public ComplianceThreshold getThresholdBySensorType(String sensorType) {
+        return thresholdRepository.findBySensorType(sensorType)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Threshold not found"));
     }
 
     @Override
