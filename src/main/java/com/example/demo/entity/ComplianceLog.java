@@ -7,26 +7,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-
+@Table(
+    name = "compliance_logs",
+    uniqueConstraints = {@UniqueConstraint(columnNames = "sensor_reading_id")}
+)
 public class ComplianceLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
- 
     @Column(name = "sensor_reading_id", nullable = false)
     private Long sensorReadingId;
-
 
     @Column(name = "threshold_id", nullable = false)
     private Long thresholdId;
 
     @Column(nullable = false)
-    private String statusAssigned; 
+    private String statusAssigned;
 
     private String remarks;
 
@@ -37,20 +39,14 @@ public class ComplianceLog {
     public ComplianceLog() {
     }
 
-
-    public ComplianceLog(
-            Long sensorReadingId,
-            Long thresholdId,
-            String statusAssigned,
-            String remarks,
-            LocalDateTime loggedAt) {
-
+    public ComplianceLog(Long sensorReadingId, Long thresholdId, String statusAssigned, String remarks, LocalDateTime loggedAt) {
         this.sensorReadingId = sensorReadingId;
         this.thresholdId = thresholdId;
         this.statusAssigned = statusAssigned;
         this.remarks = remarks;
         this.loggedAt = loggedAt;
     }
+
 
     public Long getId() {
         return id;

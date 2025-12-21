@@ -1,54 +1,50 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-
+@Table(name = "sensors")
 public class Sensor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "sensor_code", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String sensorCode;
 
     @Column(nullable = false)
     private String sensorType;
 
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @Column(nullable = false)
+    private Long locationId; // store location ID only
 
+    @Column(nullable = false)
     private LocalDateTime installedAt;
 
     @Column(nullable = false)
-    private Boolean isActive = true;
+    private Boolean isActive;
 
-
-    private List<SensorReading> sensorReadings;
-
-    public Sensor() {}
-
-    public Sensor(String sensorCode, String sensorType, Long location,
-                  LocalDateTime installedAt, Boolean isActive) {
-        this.sensorCode = sensorCode;
-        this.sensorType = sensorType;
-        this.location = location;
-        this.installedAt = installedAt;
-        this.isActive = (isActive != null) ? isActive : true;
+    // Constructors
+    public Sensor() {
     }
 
+    public Sensor(String sensorCode, String sensorType, Long locationId, LocalDateTime installedAt, Boolean isActive) {
+        this.sensorCode = sensorCode;
+        this.sensorType = sensorType;
+        this.locationId = locationId;
+        this.installedAt = installedAt;
+        this.isActive = isActive;
+    }
+
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -69,12 +65,12 @@ public class Sensor {
         this.sensorType = sensorType;
     }
 
-    public Location getLocation() {
-        return location;
+    public Long getLocationId() {
+        return locationId;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     public LocalDateTime getInstalledAt() {
@@ -90,14 +86,6 @@ public class Sensor {
     }
 
     public void setIsActive(Boolean isActive) {
-        this.isActive = (isActive != null) ? isActive : true;
-    }
-
-    public List<SensorReading> getSensorReadings() {
-        return sensorReadings;
-    }
-
-    public void setSensorReadings(List<SensorReading> sensorReadings) {
-        this.sensorReadings = sensorReadings;
+        this.isActive = isActive;
     }
 }

@@ -1,28 +1,24 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "sensor_readings")
 public class SensorReading {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @JoinColumn(name = "sensor_id", nullable = false)
-    private Sensor sensor;
+    @Column(nullable = false)
+    private Long sensorId; // store sensor ID only
 
     @Column(nullable = false)
     private Double readingValue;
@@ -33,32 +29,28 @@ public class SensorReading {
     @Column(nullable = false)
     private String status;
 
-
-    private List<ComplianceLog> complianceLogs;
-
-
+    // Constructors
     public SensorReading() {
     }
 
-
-    public SensorReading(Sensor sensor, Double readingValue,
-                         LocalDateTime readingTime, String status) {
-        this.sensor = sensor;
+    public SensorReading(Long sensorId, Double readingValue, LocalDateTime readingTime, String status) {
+        this.sensorId = sensorId;
         this.readingValue = readingValue;
         this.readingTime = readingTime;
         this.status = status;
     }
 
+    // Getters & Setters
     public Long getId() {
         return id;
     }
 
-    public Sensor getSensor() {
-        return sensor;
+    public Long getSensorId() {
+        return sensorId;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+    public void setSensorId(Long sensorId) {
+        this.sensorId = sensorId;
     }
 
     public Double getReadingValue() {

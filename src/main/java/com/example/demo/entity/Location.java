@@ -7,27 +7,28 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "locations")
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "location_name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String locationName;
 
     private String description;
 
-    @Column(nullable = false)
     private String region;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    // Constructors
     public Location() {
-
     }
 
     public Location(String locationName, String description, String region, LocalDateTime createdAt) {
@@ -37,6 +38,7 @@ public class Location {
         this.createdAt = createdAt;
     }
 
+    // Getters & Setters
     public Long getId() {
         return id;
     }

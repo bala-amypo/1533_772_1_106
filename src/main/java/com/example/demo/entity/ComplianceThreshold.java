@@ -13,16 +13,13 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(
     name = "compliance_thresholds",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "sensor_type")
-    }
+    uniqueConstraints = {@UniqueConstraint(columnNames = "sensor_type")}
 )
 public class ComplianceThreshold {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @Column(name = "sensor_type", nullable = false, unique = true)
     private String sensorType;
@@ -34,23 +31,16 @@ public class ComplianceThreshold {
     private Double maxValue;
 
     @Column(nullable = false)
-    private String severityLevel; 
+    private String severityLevel;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-
+    // Constructors
     public ComplianceThreshold() {
     }
 
-
-    public ComplianceThreshold(
-            String sensorType,
-            Double minValue,
-            Double maxValue,
-            String severityLevel,
-            LocalDateTime createdAt) {
-
+    public ComplianceThreshold(String sensorType, Double minValue, Double maxValue, String severityLevel, LocalDateTime createdAt) {
         this.sensorType = sensorType;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -58,7 +48,7 @@ public class ComplianceThreshold {
         this.createdAt = createdAt;
     }
 
-
+    // Getters & Setters
     public Long getId() {
         return id;
     }
