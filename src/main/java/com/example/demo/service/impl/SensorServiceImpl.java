@@ -1,5 +1,6 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Location;
 import com.example.demo.entity.Sensor;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.LocationRepository;
 import com.example.demo.repository.SensorRepository;
 import com.example.demo.service.SensorService;
@@ -25,13 +25,22 @@ public class SensorServiceImpl implements SensorService {
     public Sensor createSensor(Long locationId, Sensor sensor) {
 
         Location location = locationRepository.findById(locationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Location not found"));
+                .orElseThrow(() -> new RuntimeException("Location not found"));
+
 
         if (sensor.getSensorType() == null || sensor.getSensorType().isEmpty()) {
-            throw new IllegalArgumentException("sensorType must not be null or empty");
+            throw new IllegalArgumentException("sensorType is required");
         }
 
-        sensor.setLocation(location);
+        sensor.setLocationId(location.getId());
+
+
+        if (sensor.getInstalledAt() == null) {
+            sensor.setInstalledAt(LocalDateTime.now());
+        }
+        if (sensor.getIsActive() == null) {
+            sensor.setIsActive(true);
+        }
 
         return sensorRepository.save(sensor);
     }
@@ -39,7 +48,7 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor getSensor(Long id) {
         return sensorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Sensor not found"));
+                .orElseThrow(() -> new RuntimeException("Sensor not found"));
     }
 
     @Override
