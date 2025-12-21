@@ -35,15 +35,15 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
 
-        // 1️⃣ Fetch SensorReading
+    
         SensorReading reading = sensorReadingRepository.findById(readingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
 
-        // 2️⃣ Get sensorType from Sensor
+    
         Sensor sensor = reading.getSensor();
         String sensorType = sensor.getSensorType();
 
-        // 3️⃣ Fetch ComplianceThreshold
+    
         ComplianceThreshold threshold = complianceThresholdRepository
                 .findBySensorType(sensorType)
                 .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
