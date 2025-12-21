@@ -23,6 +23,13 @@ public class ComplianceThresholdServiceImpl
     }
 
     @Override
+    public ComplianceThreshold getThreshold(Long id) {
+        return thresholdRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Threshold not found"));
+    }
+
+    @Override
     public ComplianceThreshold getThresholdBySensorType(String sensorType) {
         return thresholdRepository.findBySensorType(sensorType)
                 .orElseThrow(() ->
