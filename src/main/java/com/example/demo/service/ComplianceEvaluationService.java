@@ -10,5 +10,5 @@ public interface ComplianceEvaluationService {
 
     List<ComplianceLog> getLogsByReading(Long readingId);
 
-    ComplianceLog getLog(Long id);
+    ComplianceLog getLog(Long id); 
 }
