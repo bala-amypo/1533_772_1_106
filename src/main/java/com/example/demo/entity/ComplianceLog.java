@@ -7,9 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
@@ -20,63 +17,59 @@ public class ComplianceLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Many logs -> One sensor reading
-    // Rule: One compliance log per reading (unique constraint)
-    @ManyToOne
-    @JoinColumn(name = "sensor_reading_id", nullable = false)
-    private SensorReading sensorReading;
+ 
+    @Column(name = "sensor_reading_id", nullable = false)
+    private Long sensorReadingId;
 
-    // Many logs -> One compliance threshold
-    @ManyToOne
-    @JoinColumn(name = "threshold_id", nullable = false)
-    private ComplianceThreshold thresholdUsed;
+
+    @Column(name = "threshold_id", nullable = false)
+    private Long thresholdId;
 
     @Column(nullable = false)
-    private String statusAssigned; // SAFE or UNSAFE
+    private String statusAssigned; 
 
     private String remarks;
 
     @Column(nullable = false)
     private LocalDateTime loggedAt;
 
-    // No-arg constructor
+
     public ComplianceLog() {
     }
 
-    // Parameterized constructor
+
     public ComplianceLog(
-            SensorReading sensorReading,
-            ComplianceThreshold thresholdUsed,
+            Long sensorReadingId,
+            Long thresholdId,
             String statusAssigned,
             String remarks,
             LocalDateTime loggedAt) {
 
-        this.sensorReading = sensorReading;
-        this.thresholdUsed = thresholdUsed;
+        this.sensorReadingId = sensorReadingId;
+        this.thresholdId = thresholdId;
         this.statusAssigned = statusAssigned;
         this.remarks = remarks;
         this.loggedAt = loggedAt;
     }
 
-    // Getters & Setters
     public Long getId() {
         return id;
     }
 
-    public SensorReading getSensorReading() {
-        return sensorReading;
+    public Long getSensorReadingId() {
+        return sensorReadingId;
     }
 
-    public void setSensorReading(SensorReading sensorReading) {
-        this.sensorReading = sensorReading;
+    public void setSensorReadingId(Long sensorReadingId) {
+        this.sensorReadingId = sensorReadingId;
     }
 
-    public ComplianceThreshold getThresholdUsed() {
-        return thresholdUsed;
+    public Long getThresholdId() {
+        return thresholdId;
     }
 
-    public void setThresholdUsed(ComplianceThreshold thresholdUsed) {
-        this.thresholdUsed = thresholdUsed;
+    public void setThresholdId(Long thresholdId) {
+        this.thresholdId = thresholdId;
     }
 
     public String getStatusAssigned() {
