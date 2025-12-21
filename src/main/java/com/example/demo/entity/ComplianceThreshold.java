@@ -23,7 +23,7 @@ public class ComplianceThreshold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // must be unique
+
     @Column(name = "sensor_type", nullable = false, unique = true)
     private String sensorType;
 
@@ -34,16 +34,16 @@ public class ComplianceThreshold {
     private Double maxValue;
 
     @Column(nullable = false)
-    private String severityLevel; // LOW, MEDIUM, HIGH
+    private String severityLevel; 
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // No-arg constructor
+
     public ComplianceThreshold() {
     }
 
-    // Parameterized constructor
+
     public ComplianceThreshold(
             String sensorType,
             Double minValue,
@@ -58,7 +58,7 @@ public class ComplianceThreshold {
         this.createdAt = createdAt;
     }
 
-    // Getters & Setters
+
     public Long getId() {
         return id;
     }
