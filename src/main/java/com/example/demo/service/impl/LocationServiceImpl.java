@@ -28,7 +28,6 @@ public class LocationServiceImpl implements LocationService {
                     throw new IllegalArgumentException("Location name already exists");
                 });
 
-        // set createdAt
         location.setCreatedAt(LocalDateTime.now());
 
         return locationRepository.save(location);
