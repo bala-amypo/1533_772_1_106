@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationService {
@@ -34,37 +33,29 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
 
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
-        // Fetch reading
+        // Fetch SensorReading
         SensorReading reading = sensorReadingRepository.findById(readingId)
                 .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
 
-        // Get sensor type
-        String sensorType = reading.getSensor().getSensorType();
-
-        // Fetch threshold
+        // Fetch ComplianceThreshold by sensor type
+        String sensorType = reading.getSensor().getSensorType(); // getSensor() exists in entity
         ComplianceThreshold threshold = complianceThresholdRepository.findBySensorType(sensorType)
                 .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
 
         // Determine status
-        String statusAssigned = (reading.getReadingValue() >= threshold.getMinValue() &&
-                                 reading.getReadingValue() <= threshold.getMaxValue()) ? "SAFE" : "UNSAFE";
+        String statusAssigned = (reading.getReadingValue() >= threshold.getMinValue()
+                && reading.getReadingValue() <= threshold.getMaxValue()) ? "SAFE" : "UNSAFE";
 
-        // Check existing log
+        // Check if log exists
         List<ComplianceLog> existingLogs = complianceLogRepository.findBySensorReading_Id(readingId);
-        ComplianceLog log;
-        if (existingLogs.isEmpty()) {
-            log = new ComplianceLog();
-        } else {
-            log = existingLogs.get(0);
-        }
+        ComplianceLog log = existingLogs.isEmpty() ? new ComplianceLog() : existingLogs.get(0);
 
         // Set log details
         log.setSensorReading(reading);
         log.setThresholdUsed(threshold);
-        log.setStatusAssigned(statusAssigned);
-        log.setLoggedAt(LocalDateTime.now());
+        log.setStatus(statusAssigned);
+        log.setEvaluatedAt(LocalDateTime.now());
 
-        // Save log
         return complianceLogRepository.save(log);
     }
 
