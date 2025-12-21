@@ -14,19 +14,18 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-
-    @PostMapping
+    @PostMapping("/api/locations")
     public Location createLocation(@RequestBody Location location) {
         return locationService.createLocation(location);
     }
 
 
-    @GetMapping
+    @GetMapping("/api/locations")
     public List<Location> getAllLocations() {
         return locationService.getAllLocations();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/locations/{id}")
     public Location getLocationById(@PathVariable Long id) {
         return locationService.getLocation(id);
     }
