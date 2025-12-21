@@ -9,5 +9,5 @@ import com.example.demo.entity.ComplianceThreshold;
 public interface ComplianceThresholdRepository
         extends JpaRepository<ComplianceThreshold, Long> {
 
-    Optional<ComplianceThreshold> findBySensorId(Long sensorId);
+    Optional<ComplianceThreshold> findBySensorType(String sensorType);
 }
