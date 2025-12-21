@@ -8,29 +8,36 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "locations")
+@Table(
+    name = "locations",
+    uniqueConstraints = {@UniqueConstraint(columnNames = "location_name")}
+)
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "location_name", nullable = false, unique = true)
     private String locationName;
 
+    @Column
     private String description;
 
+    @Column
     private String region;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // Constructors
+    // No-arg constructor
     public Location() {
     }
 
+    // Parameterized constructor
     public Location(String locationName, String description, String region, LocalDateTime createdAt) {
         this.locationName = locationName;
         this.description = description;
