@@ -24,11 +24,9 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor createSensor(Long locationId, Sensor sensor) {
 
-        // 1️⃣ Fetch Location
         Location location = locationRepository.findById(locationId)
                 .orElseThrow(() -> new ResourceNotFoundException("Location not found"));
 
-        // 2️⃣ Validate sensorType
         if (sensor.getSensorType() == null || sensor.getSensorType().isEmpty()) {
             throw new IllegalArgumentException("sensorType must not be null or empty");
         }
