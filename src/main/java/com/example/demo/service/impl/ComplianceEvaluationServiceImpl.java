@@ -1,83 +1,60 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.example.demo.entity.ComplianceLog;
+import com.example.demo.entity.SensorReading;
+import com.example.demo.repository.ComplianceLogRepository;
+import com.example.demo.repository.SensorReadingRepository;
+import com.example.demo.service.ComplianceEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.ComplianceLog;
-import com.example.demo.entity.ComplianceThreshold;
-import com.example.demo.entity.SensorReading;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.ComplianceLogRepository;
-import com.example.demo.repository.ComplianceThresholdRepository;
-import com.example.demo.repository.SensorReadingRepository;
-import com.example.demo.service.ComplianceEvaluationService;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationService {
 
     @Autowired
-    private SensorReadingRepository sensorReadingRepository;
-
-    @Autowired
-    private ComplianceThresholdRepository complianceThresholdRepository;
-
-    @Autowired
     private ComplianceLogRepository complianceLogRepository;
 
+    @Autowired
+    private SensorReadingRepository sensorReadingRepository;
+
     @Override
-    public ComplianceLog evaluateReading(Long readingId) {
-        // Fetch sensor reading
-        SensorReading reading = sensorReadingRepository.findById(readingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
+    public ComplianceLog evaluateCompliance(SensorReading reading) {
+        ComplianceLog log = new ComplianceLog();
+        
 
-        // Get sensor type
-        String sensorType = reading.getSensorType();
-        if (sensorType == null || sensorType.isEmpty()) {
-            throw new IllegalArgumentException("Sensor type is missing for the reading");
-        }
+        String status = "COMPLIANT";
+        Double readingValue = 0.0;
+        
 
-        // Fetch threshold
-        ComplianceThreshold threshold = complianceThresholdRepository.findBySensorType(sensorType)
-                .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
-
-        // Determine status
-        String statusAssigned;
-        Double value = reading.getReadingValue();
-        if (value >= threshold.getMinValue() && value <= threshold.getMaxValue()) {
-            statusAssigned = "SAFE";
-        } else {
-            statusAssigned = "UNSAFE";
-        }
-
-        // Check if log exists
-        Optional<ComplianceLog> existingLog = complianceLogRepository.findBySensorReading_Id(readingId);
-        ComplianceLog log;
-        if (existingLog.isPresent()) {
-            log = existingLog.get();
-            log.setStatus(statusAssigned);
-            log.setReadingValue(value);
-        } else {
-            log = new ComplianceLog();
-            log.setSensorReading(reading);
-            log.setStatus(statusAssigned);
-            log.setReadingValue(value);
-        }
-
-        // Save and return
         return complianceLogRepository.save(log);
     }
 
     @Override
-    public List<ComplianceLog> getLogsByReading(Long readingId) {
-        return complianceLogRepository.findBySensorReading_Id(readingId);
+    public Optional<ComplianceLog> getLog(Long id) {
+        return complianceLogRepository.findById(id);
     }
 
     @Override
-    public ComplianceLog getLog(Long id) {
-        return complianceLogRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
+    public List<ComplianceLog> getAllLogs() {
+        return complianceLogRepository.findAll();
+    }
+
+    @Override
+    public List<ComplianceLog> getLogsBySensorId(Long sensorId) {
+        return complianceLogRepository.findBySensorReading_SensorId(sensorId);
+    }
+
+    @Override
+    public List<ComplianceLog> getLogsByStatus(String status) {
+        return complianceLogRepository.findByStatus(status);
+    }
+
+    @Override
+    public void deleteLog(Long id) {
+        complianceLogRepository.deleteById(id);
     }
 }
