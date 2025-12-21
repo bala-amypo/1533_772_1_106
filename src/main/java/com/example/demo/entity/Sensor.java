@@ -40,7 +40,7 @@ public class Sensor {
 
     public Sensor() {}
 
-    public Sensor(String sensorCode, String sensorType, Location location,
+    public Sensor(String sensorCode, String sensorType, Long location,
                   LocalDateTime installedAt, Boolean isActive) {
         this.sensorCode = sensorCode;
         this.sensorType = sensorType;
