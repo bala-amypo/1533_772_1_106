@@ -7,11 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.ComplianceLog;
 import com.example.demo.entity.ComplianceThreshold;
+import com.example.demo.entity.Sensor;
 import com.example.demo.entity.SensorReading;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ComplianceLogRepository;
 import com.example.demo.repository.ComplianceThresholdRepository;
 import com.example.demo.repository.SensorReadingRepository;
+import com.example.demo.repository.SensorRepository;
 import com.example.demo.service.ComplianceEvaluationService;
 
 @Service
@@ -19,6 +21,9 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
 
     @Autowired
     private SensorReadingRepository sensorReadingRepository;
+
+    @Autowired
+    private SensorRepository sensorRepository;
 
     @Autowired
     private ComplianceThresholdRepository complianceThresholdRepository;
@@ -34,11 +39,12 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
                 .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
 
 
-        String sensorType = reading.getSensorType();
+        Sensor sensor = sensorRepository.findById(reading.getSensorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sensor not found"));
 
 
         ComplianceThreshold threshold = complianceThresholdRepository
-                .findBySensorType(sensorType)
+                .findBySensorType(sensor.getSensorType())
                 .orElseThrow(() -> new ResourceNotFoundException("Threshold not found"));
 
 
@@ -50,21 +56,12 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
             status = "UNSAFE";
         }
 
-        // 5. Check existing log
-        List<ComplianceLog> logs =
-                complianceLogRepository.findBySensorReading_Id(reading.getId());
 
-        ComplianceLog log;
-        if (logs.isEmpty()) {
-            log = new ComplianceLog();
-            log.setSensorReadingId(reading.getId());
-            log.setThresholdId(threshold.getId());
-        } else {
-            log = logs.get(0);
-        }
-
+        ComplianceLog log = new ComplianceLog();
+        log.setSensorReadingId(reading.getId());
+        log.setThresholdId(threshold.getId());
         log.setStatusAssigned(status);
-        log.setRemarks("Evaluated automatically");
+        log.setRemarks("Auto evaluated");
 
         return complianceLogRepository.save(log);
     }
