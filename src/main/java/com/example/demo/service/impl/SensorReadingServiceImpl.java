@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Sensor;
 import com.example.demo.entity.SensorReading;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.SensorReadingRepository;
 import com.example.demo.repository.SensorRepository;
 import com.example.demo.service.SensorReadingService;
-import com.example.demo.exception.ResourceNotFoundException;
 
 @Service
 public class SensorReadingServiceImpl implements SensorReadingService {
@@ -24,23 +24,25 @@ public class SensorReadingServiceImpl implements SensorReadingService {
 
     @Override
     public SensorReading submitReading(Long sensorId, SensorReading reading) {
+
+     
         Sensor sensor = sensorRepository.findById(sensorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Sensor not found"));
 
+    
         if (reading.getReadingValue() == null || reading.getReadingValue() == 0) {
-            throw new IllegalArgumentException("readingvalue is required");
+            throw new IllegalArgumentException("readingvalue");
         }
 
-        if (reading.getReadingTime() != null && reading.getReadingTime().isAfter(LocalDateTime.now())) {
-            throw new IllegalArgumentException("readingTime cannot be in the future");
+        
+        if (reading.getReadingTime() != null &&
+            reading.getReadingTime().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Reading time cannot be in future");
         }
 
-        reading.setSensorId(sensor.getId());  // no relationship, store ID only
+     
+        reading.setSensorId(sensor.getId());
         reading.setStatus("PENDING");
-
-        if (reading.getReadingTime() == null) {
-            reading.setReadingTime(LocalDateTime.now());
-        }
 
         return readingRepository.save(reading);
     }
@@ -53,6 +55,10 @@ public class SensorReadingServiceImpl implements SensorReadingService {
 
     @Override
     public List<SensorReading> getReadingsBySensor(Long sensorId) {
-        return readingRepository.findBySensor_Id(sensorId);
+
+   
+        sensorRepository.findById(sensorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Sensor not found"));
+        return readingRepository.findBySensorId(sensorId);
     }
 }
