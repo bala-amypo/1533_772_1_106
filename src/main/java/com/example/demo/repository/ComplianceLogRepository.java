@@ -8,6 +8,5 @@ import com.example.demo.entity.ComplianceLog;
 
 public interface ComplianceLogRepository extends JpaRepository<ComplianceLog, Long> {
 
-
     List<ComplianceLog> findBySensorReadingId(Long sensorReadingId);
 }
