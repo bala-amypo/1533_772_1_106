@@ -1,0 +1,58 @@
+package com.example.demo.service.impl;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Sensor;
+import com.example.demo.entity.SensorReading;
+import com.example.demo.repository.SensorReadingRepository;
+import com.example.demo.repository.SensorRepository;
+import com.example.demo.service.SensorReadingService;
+import com.example.demo.exception.ResourceNotFoundException;
+
+@Service
+public class SensorReadingServiceImpl implements SensorReadingService {
+
+    @Autowired
+    private SensorReadingRepository readingRepository;
+
+    @Autowired
+    private SensorRepository sensorRepository;
+
+    @Override
+    public SensorReading submitReading(Long sensorId, SensorReading reading) {
+        Sensor sensor = sensorRepository.findById(sensorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Sensor not found"));
+
+        if (reading.getReadingValue() == null || reading.getReadingValue() == 0) {
+            throw new IllegalArgumentException("readingvalue is required");
+        }
+
+        if (reading.getReadingTime() != null && reading.getReadingTime().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("readingTime cannot be in the future");
+        }
+
+        reading.setSensorId(sensor.getId());  // no relationship, store ID only
+        reading.setStatus("PENDING");
+
+        if (reading.getReadingTime() == null) {
+            reading.setReadingTime(LocalDateTime.now());
+        }
+
+        return readingRepository.save(reading);
+    }
+
+    @Override
+    public SensorReading getReading(Long id) {
+        return readingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
+    }
+
+    @Override
+    public List<SensorReading> getReadingsBySensor(Long sensorId) {
+        return readingRepository.findBySensor_Id(sensorId);
+    }
+}
