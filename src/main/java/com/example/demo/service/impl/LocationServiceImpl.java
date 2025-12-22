@@ -36,4 +36,3 @@ public class LocationServiceImpl implements LocationService {
         return locationRepository.findAll();
     }
 }
-`
