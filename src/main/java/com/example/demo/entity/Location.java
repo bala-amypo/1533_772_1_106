@@ -40,7 +40,6 @@ public class Location {
         this.createdAt = createdAt;
     }
 
-    // Getters & Setters
     public Long getId() {
         return id;
     }
