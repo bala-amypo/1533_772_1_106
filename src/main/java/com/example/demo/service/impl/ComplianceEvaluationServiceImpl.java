@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +47,9 @@ public class ComplianceEvaluationServiceImpl
         String status;
         if (reading.getReadingValue() >= threshold.getMinValue()
                 && reading.getReadingValue() <= threshold.getMaxValue()) {
-            status = "SAFE";
+            status = "NORMAL";
         } else {
-            status = "NOT SAFE";
+            status = "NOT_COMPLIANT";
         }
 
         ComplianceLog log = new ComplianceLog();
@@ -56,5 +58,16 @@ public class ComplianceEvaluationServiceImpl
         log.setStatus(status);
 
         return logRepository.save(log);
+    }
+
+    @Override
+    public ComplianceLog getLog(Long id) {
+        return logRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Log not found"));
+    }
+
+    @Override
+    public List<ComplianceLog> getLogsByReading(Long readingId) {
+        return logRepository.findByReadingId(readingId);
     }
 }
