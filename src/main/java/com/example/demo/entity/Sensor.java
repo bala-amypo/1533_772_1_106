@@ -24,7 +24,7 @@ public class Sensor {
     private String sensorType;
 
     @Column(nullable = false)
-    private Long locationId; // store location ID only
+    private Long locationId;
 
     @Column(nullable = false)
     private LocalDateTime installedAt;
@@ -32,7 +32,6 @@ public class Sensor {
     @Column(nullable = false)
     private Boolean isActive;
 
-    // Constructors
     public Sensor() {
     }
 
