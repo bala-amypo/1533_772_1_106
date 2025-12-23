@@ -30,7 +30,7 @@ public class SensorReadingServiceImpl implements SensorReadingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Sensor not found"));
 
     
-        if (reading.getReadingValue() == null || reading.getReadingValue() == 0) {
+        if ( reading.getReadingValue() == 0) {
             throw new IllegalArgumentException("readingvalue");
         }
 
