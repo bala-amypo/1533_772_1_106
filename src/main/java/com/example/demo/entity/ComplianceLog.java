@@ -1,8 +1,13 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "compliance_logs")
 public class ComplianceLog {
 
     @Id
@@ -10,13 +15,15 @@ public class ComplianceLog {
     private Long id;
 
     private Long readingId;
-    private Double readingValue;
+    private double readingValue;
     private String status;
-
-    public ComplianceLog() {}
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getReadingId() {
@@ -27,11 +34,11 @@ public class ComplianceLog {
         this.readingId = readingId;
     }
 
-    public Double getReadingValue() {
+    public double getReadingValue() {
         return readingValue;
     }
 
-    public void setReadingValue(Double readingValue) {
+    public void setReadingValue(double readingValue) {
         this.readingValue = readingValue;
     }
 
