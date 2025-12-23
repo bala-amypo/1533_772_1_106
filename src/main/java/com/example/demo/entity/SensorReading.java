@@ -17,7 +17,7 @@ public class SensorReading {
     private Long id;
 
     private Long sensorId;
-    private double readingValue;
+    private Double readingValue;
     private LocalDateTime readingTime;
     private String status;
 
