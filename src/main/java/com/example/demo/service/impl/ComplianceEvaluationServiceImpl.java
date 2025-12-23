@@ -35,9 +35,9 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
         String status;
         if (reading.getReadingValue() >= threshold.getMinValue()
                 && reading.getReadingValue() <= threshold.getMaxValue()) {
-            status = "NORMAL";
+            status = "SAFE";
         } else {
-            status = "NOT_COMPLIANT";
+            status = "UNSAFE";
         }
 
         ComplianceLog log = new ComplianceLog();
