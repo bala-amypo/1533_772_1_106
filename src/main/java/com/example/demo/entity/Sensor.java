@@ -43,7 +43,6 @@ public class Sensor {
         this.isActive = isActive;
     }
 
-    // Getters & Setters
     public Long getId() {
         return id;
     }
