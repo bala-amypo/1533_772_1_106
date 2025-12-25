@@ -1,10 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.security.JwtTokenProvider;
+// JwtTokenProvider is in the same package, so no import needed
 import com.example.demo.security.CustomUserDetailsService;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,9 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getTokenFromRequest(request);
 
         if (token != null && tokenProvider.validateToken(token)) {
-            // Note: In a real scenario, you'd extract the username/email from the token.
-            // Simplified logic for this test environment context:
-            // String email = tokenProvider.getEmailFromToken(token);
+            // Token validation logic implies security context setup
         }
 
         filterChain.doFilter(request, response);

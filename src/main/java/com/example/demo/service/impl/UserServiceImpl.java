@@ -5,6 +5,7 @@ import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    // Modified constructor to match the Test Case (only 1 argument)
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        // Initialize PasswordEncoder internally since the test doesn't inject it
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -32,7 +35,6 @@ public class UserServiceImpl implements UserService {
             user.setRole(Role.USER);
         }
         
-        // Hash raw password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
         return userRepository.save(user);

@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JwtTokenProvider; // Updated Import
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.User;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,10 +40,12 @@ public class AuthController {
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             String token = tokenProvider.generateToken(user.getId(), user.getEmail(), user.getRole());
             AuthResponse response = new AuthResponse();
-            // Assuming AuthResponse has a setter for token, or a constructor
-            // Since DTO code wasn't explicitly requested, using a generic approach:
-            // response.setToken(token); 
-            // response.setEmail(user.getEmail());
+            // Manually setting fields as DTO was generic in previous step
+            response.setToken(token);
+            response.setUserId(user.getId());
+            response.setEmail(user.getEmail());
+            response.setRole(user.getRole().name());
+            
             return ResponseEntity.ok(response);
         } else {
             throw new IllegalArgumentException("Invalid credentials");

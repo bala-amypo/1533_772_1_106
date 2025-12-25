@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.config;
 
 import com.example.demo.entity.Role;
 import io.jsonwebtoken.*;
@@ -10,16 +10,14 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${app.jwtSecret:SecretKeyForWaterQualityMonitoringAPI123456789}")
+    @Value("${app.jwtSecret:SecretKeyForWaterQualityMonitoringAPI_MustBeLongEnoughForHS512_12345}")
     private String jwtSecret;
 
     @Value("${app.jwtExpirationMs:86400000}")
     private long jwtExpirationMs;
 
-    // Constructors
     public JwtTokenProvider() {}
 
-    // Constructor used by tests if they manually instantiate
     public JwtTokenProvider(String jwtSecret, long jwtExpirationMs) {
         this.jwtSecret = jwtSecret;
         this.jwtExpirationMs = jwtExpirationMs;
@@ -44,13 +42,7 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            // In a real app, log error
             return false;
         }
-    }
-
-    // Helper method if needed by filters to get claims (optional but recommended)
-    public Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
 }
