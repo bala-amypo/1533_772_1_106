@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,14 +19,10 @@ public class SensorReading {
     private Double readingValue;
 
     private LocalDateTime readingTime;
-
     private String status;
 
-    // No-arg constructor
-    public SensorReading() {
-    }
+    public SensorReading() {}
 
-    // Parameterized constructor
     public SensorReading(Sensor sensor, Double readingValue, LocalDateTime readingTime, String status) {
         this.sensor = sensor;
         this.readingValue = readingValue;
@@ -35,43 +31,14 @@ public class SensorReading {
     }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
-    }
-
-    public Double getReadingValue() {
-        return readingValue;
-    }
-
-    public void setReadingValue(Double readingValue) {
-        this.readingValue = readingValue;
-    }
-
-    public LocalDateTime getReadingTime() {
-        return readingTime;
-    }
-
-    public void setReadingTime(LocalDateTime readingTime) {
-        this.readingTime = readingTime;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Sensor getSensor() { return sensor; }
+    public void setSensor(Sensor sensor) { this.sensor = sensor; }
+    public Double getReadingValue() { return readingValue; }
+    public void setReadingValue(Double readingValue) { this.readingValue = readingValue; }
+    public LocalDateTime getReadingTime() { return readingTime; }
+    public void setReadingTime(LocalDateTime readingTime) { this.readingTime = readingTime; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }
