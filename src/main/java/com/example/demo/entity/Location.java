@@ -1,32 +1,76 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-
-import java.util.List;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "locations")
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String address;
+    @Column(nullable = false, unique = true)
+    private String locationName;
 
-    public Location() {}
+    private String description;
 
-    public Location(String name, String address) {
-        this.name = name;
-        this.address = address;
+    @Column(nullable = false)
+    private String region;
+
+    private LocalDateTime createdAt;
+
+    // No-arg constructor
+    public Location() {
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // Parameterized constructor
+    public Location(String locationName, String description, String region, LocalDateTime createdAt) {
+        this.locationName = locationName;
+        this.description = description;
+        this.region = region;
+        this.createdAt = createdAt;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
