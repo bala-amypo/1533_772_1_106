@@ -1,89 +1,38 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "sensors")
 public class Sensor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String sensorCode;
-
-    @Column(nullable = false)
     private String sensorType;
 
-    @Column(nullable = false)
-    private Long locationId;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-    @Column(nullable = false)
-    private LocalDateTime installedAt;
+    public Sensor() {}
 
-    @Column(nullable = false)
-    private Boolean isActive;
-
-    public Sensor() {
-    }
-
-    public Sensor(String sensorCode, String sensorType, Long locationId, LocalDateTime installedAt, Boolean isActive) {
+    public Sensor(String sensorCode, String sensorType, Location location) {
         this.sensorCode = sensorCode;
         this.sensorType = sensorType;
-        this.locationId = locationId;
-        this.installedAt = installedAt;
-        this.isActive = isActive;
+        this.location = location;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getSensorCode() {
-        return sensorCode;
-    }
+    public String getSensorCode() { return sensorCode; }
+    public void setSensorCode(String sensorCode) { this.sensorCode = sensorCode; }
 
-    public void setSensorCode(String sensorCode) {
-        this.sensorCode = sensorCode;
-    }
+    public String getSensorType() { return sensorType; }
+    public void setSensorType(String sensorType) { this.sensorType = sensorType; }
 
-    public String getSensorType() {
-        return sensorType;
-    }
-
-    public void setSensorType(String sensorType) {
-        this.sensorType = sensorType;
-    }
-
-    public Long getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
-
-    public LocalDateTime getInstalledAt() {
-        return installedAt;
-    }
-
-    public void setInstalledAt(LocalDateTime installedAt) {
-        this.installedAt = installedAt;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
+    public Location getLocation() { return location; }
+    public void setLocation(Location location) { this.location = location; }
 }
