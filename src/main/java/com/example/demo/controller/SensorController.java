@@ -1,34 +1,34 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.Sensor;
 import com.example.demo.service.SensorService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/sensors")
 public class SensorController {
 
-    @Autowired
-    private SensorService sensorService;
+    private final SensorService sensorService;
 
+    public SensorController(SensorService sensorService) {
+        this.sensorService = sensorService;
+    }
 
-    @PostMapping("/sensors/location/{locationId}")
-    public Sensor createSensor(@PathVariable Long locationId,
-                               @RequestBody Sensor sensor) {
+    @PostMapping("/location/{locationId}")
+    public Sensor createSensor(
+            @PathVariable Long locationId,
+            @RequestBody Sensor sensor) {
         return sensorService.createSensor(locationId, sensor);
     }
 
-   
-    @GetMapping("/sensors/{id}")
+    @GetMapping("/{id}")
     public Sensor getSensor(@PathVariable Long id) {
         return sensorService.getSensor(id);
     }
 
-
-    @GetMapping("/sensors")
+    @GetMapping
     public List<Sensor> getAllSensors() {
         return sensorService.getAllSensors();
     }
