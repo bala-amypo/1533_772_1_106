@@ -4,7 +4,6 @@ import com.example.demo.entity.Location;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.LocationRepository;
 import com.example.demo.service.LocationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +11,17 @@ import java.util.List;
 @Service
 public class LocationServiceImpl implements LocationService {
 
-    @Autowired
-    private LocationRepository locationRepository;
+    private final LocationRepository locationRepository;
+
+    public LocationServiceImpl(LocationRepository locationRepository) {
+        this.locationRepository = locationRepository;
+    }
 
     @Override
     public Location createLocation(Location location) {
+        if (location.getRegion() == null || location.getRegion().trim().isEmpty()) {
+            throw new IllegalArgumentException("region required");
+        }
         return locationRepository.save(location);
     }
 
@@ -29,11 +34,5 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<Location> getAllLocations() {
         return locationRepository.findAll();
-    }
-
-    @Override
-    public void deleteLocation(Long id) {
-        Location location = getLocation(id);
-        locationRepository.delete(location);
     }
 }
