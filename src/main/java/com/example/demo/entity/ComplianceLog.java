@@ -1,7 +1,3 @@
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-
 @Entity
 public class ComplianceLog {
 
@@ -9,19 +5,34 @@ public class ComplianceLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long readingId;
     private String status;
-    private String message;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToOne
+    @JoinColumn(name = "reading_id")
+    private SensorReading reading;  // <-- add this
 
-    public Long getReadingId() { return readingId; }
-    public void setReadingId(Long readingId) { this.readingId = readingId; }
+    // getters and setters
+    public SensorReading getReading() {
+        return reading;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setReading(SensorReading reading) {
+        this.reading = reading;
+    }
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
