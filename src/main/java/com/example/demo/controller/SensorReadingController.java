@@ -12,7 +12,8 @@ public class SensorReadingController {
 
     private final SensorReadingService sensorReadingService;
 
-    public SensorReadingController(SensorReadingService sensorReadingService) {
+    public SensorReadingController(
+            SensorReadingService sensorReadingService) {
         this.sensorReadingService = sensorReadingService;
     }
 
@@ -29,7 +30,8 @@ public class SensorReadingController {
     }
 
     @GetMapping("/sensor/{sensorId}")
-    public List<SensorReading> getReadingsBySensor(@PathVariable Long sensorId) {
+    public List<SensorReading> getReadingsBySensor(
+            @PathVariable Long sensorId) {
         return sensorReadingService.getReadingsBySensor(sensorId);
     }
 }
