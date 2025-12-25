@@ -1,3 +1,12 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
 @Entity
 public class ComplianceLog {
 
@@ -9,30 +18,14 @@ public class ComplianceLog {
 
     @ManyToOne
     @JoinColumn(name = "reading_id")
-    private SensorReading reading;  // <-- add this
+    private SensorReading reading;
 
-    // getters and setters
-    public SensorReading getReading() {
-        return reading;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setReading(SensorReading reading) {
-        this.reading = reading;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public SensorReading getReading() { return reading; }
+    public void setReading(SensorReading reading) { this.reading = reading; }
 }

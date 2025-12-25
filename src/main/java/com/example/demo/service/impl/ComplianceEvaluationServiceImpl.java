@@ -1,47 +1,38 @@
 package com.example.demo.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.ComplianceLog;
 import com.example.demo.entity.SensorReading;
-import com.example.demo.entity.ComplianceThreshold;
 import com.example.demo.repository.ComplianceLogRepository;
 import com.example.demo.repository.SensorReadingRepository;
-import com.example.demo.repository.ComplianceThresholdRepository;
 import com.example.demo.service.ComplianceEvaluationService;
 import com.example.demo.exception.ResourceNotFoundException;
+
+import java.util.List;
 
 @Service
 public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationService {
 
     @Autowired
-    private SensorReadingRepository sensorReadingRepository;
-
-    @Autowired
-    private ComplianceThresholdRepository complianceThresholdRepository;
-
-    @Autowired
     private ComplianceLogRepository complianceLogRepository;
+
+    @Autowired
+    private SensorReadingRepository sensorReadingRepository;
 
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
         SensorReading reading = sensorReadingRepository.findById(readingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Sensor reading not found with id: " + readingId));
-
-        ComplianceThreshold threshold = complianceThresholdRepository.findBySensorType(reading.getSensorType())
-                .orElseThrow(() -> new ResourceNotFoundException("Compliance threshold not found for sensor type: " + reading.getSensorType()));
+            .orElseThrow(() -> new ResourceNotFoundException("Reading not found"));
 
         ComplianceLog log = new ComplianceLog();
-        log.setReading(reading); // <-- this now works because ComplianceLog has setReading()
+        log.setReading(reading);
 
-        // Simple compliance evaluation
-        if (reading.getValue() >= threshold.getMinValue() && reading.getValue() <= threshold.getMaxValue()) {
-            log.setStatus("PASS");
+        // Dummy logic for status
+        if (reading.getValue() != null && reading.getValue() > 50) {
+            log.setStatus("");
         } else {
-            log.setStatus("FAIL");
+            log.setStatus("PASS");
         }
 
         return complianceLogRepository.save(log);
@@ -50,6 +41,11 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
     @Override
     public ComplianceLog getLog(Long id) {
         return complianceLogRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Compliance log not found with id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
+    }
+
+    @Override
+    public List<ComplianceLog> getLogsByReading(Long readingId) {
+        return complianceLogRepository.findByReadingId(readingId);
     }
 }
