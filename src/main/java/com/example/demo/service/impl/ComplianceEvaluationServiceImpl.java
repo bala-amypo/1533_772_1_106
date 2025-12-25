@@ -30,9 +30,9 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
 
         // Dummy logic for status
         if (reading.getValue() != null && reading.getValue() > 50) {
-            log.setStatus("");
+            log.setStatus("UNSAFE");
         } else {
-            log.setStatus("PASS");
+            log.setStatus("SAFE");
         }
 
         return complianceLogRepository.save(log);
