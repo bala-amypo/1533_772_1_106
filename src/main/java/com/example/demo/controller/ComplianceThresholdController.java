@@ -1,38 +1,41 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.entity.ComplianceThreshold;
 import com.example.demo.service.ComplianceThresholdService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/thresholds")
+@RequestMapping("/thresholds")
 public class ComplianceThresholdController {
 
-    @Autowired
-    private ComplianceThresholdService thresholdService;
+    private final ComplianceThresholdService thresholdService;
+
+    public ComplianceThresholdController(
+            ComplianceThresholdService thresholdService) {
+        this.thresholdService = thresholdService;
+    }
 
     @PostMapping
-    public ResponseEntity<ComplianceThreshold> createThreshold(
+    public ComplianceThreshold createThreshold(
             @RequestBody ComplianceThreshold threshold) {
-        return ResponseEntity.ok(
-                thresholdService.createThreshold(threshold));
+        return thresholdService.createThreshold(threshold);
+    }
+
+    @GetMapping("/{id}")
+    public ComplianceThreshold getThreshold(@PathVariable Long id) {
+        return thresholdService.getThreshold(id);
     }
 
     @GetMapping("/sensor/{sensorType}")
-    public ResponseEntity<ComplianceThreshold> getBySensorType(
+    public ComplianceThreshold getBySensorType(
             @PathVariable String sensorType) {
-        return ResponseEntity.ok(
-                thresholdService.getThresholdBySensorType(sensorType));
+        return thresholdService.getThresholdBySensorType(sensorType);
     }
 
     @GetMapping
-    public ResponseEntity<List<ComplianceThreshold>> getAll() {
-        return ResponseEntity.ok(
-                thresholdService.getAllThresholds());
+    public List<ComplianceThreshold> getAllThresholds() {
+        return thresholdService.getAllThresholds();
     }
 }

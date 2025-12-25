@@ -10,25 +10,27 @@ import java.util.List;
 @RequestMapping("/compliance")
 public class ComplianceEvaluationController {
 
-    private final ComplianceEvaluationService complianceEvaluationService;
+    private final ComplianceEvaluationService evaluationService;
 
     public ComplianceEvaluationController(
-            ComplianceEvaluationService complianceEvaluationService) {
-        this.complianceEvaluationService = complianceEvaluationService;
+            ComplianceEvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
     }
 
     @PostMapping("/evaluate/{readingId}")
-    public ComplianceLog evaluate(@PathVariable Long readingId) {
-        return complianceEvaluationService.evaluateReading(readingId);
+    public ComplianceLog evaluateReading(
+            @PathVariable Long readingId) {
+        return evaluationService.evaluateReading(readingId);
     }
 
     @GetMapping("/reading/{readingId}")
-    public List<ComplianceLog> getLogsByReading(@PathVariable Long readingId) {
-        return complianceEvaluationService.getLogsByReading(readingId);
+    public List<ComplianceLog> getLogsByReading(
+            @PathVariable Long readingId) {
+        return evaluationService.getLogsByReading(readingId);
     }
 
     @GetMapping("/{id}")
     public ComplianceLog getLog(@PathVariable Long id) {
-        return complianceEvaluationService.getLog(id);
+        return evaluationService.getLog(id);
     }
 }
