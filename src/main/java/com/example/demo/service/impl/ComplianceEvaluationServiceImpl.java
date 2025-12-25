@@ -30,6 +30,7 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
 
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
+        // Return existing log if already evaluated (Requirements Test 9.2)
         List<ComplianceLog> existingLogs = logRepository.findBySensorReading_Id(readingId);
         if (!existingLogs.isEmpty()) {
             return existingLogs.get(0);
@@ -47,6 +48,7 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
         log.setThresholdUsed(threshold);
         log.setLoggedAt(LocalDateTime.now());
 
+        // Logic for SAFE/UNSAFE (Requirements Test 9.1)
         if (reading.getReadingValue() >= threshold.getMinValue() && 
             reading.getReadingValue() <= threshold.getMaxValue()) {
             log.setStatusAssigned("SAFE");
