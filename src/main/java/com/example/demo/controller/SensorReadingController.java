@@ -2,36 +2,37 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.SensorReading;
 import com.example.demo.service.SensorReadingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/readings")
+@RequestMapping("/api/readings")
 public class SensorReadingController {
 
-    private final SensorReadingService sensorReadingService;
+    @Autowired
+    private SensorReadingService readingService;
 
-    public SensorReadingController(
-            SensorReadingService sensorReadingService) {
-        this.sensorReadingService = sensorReadingService;
-    }
-
-    @PostMapping("/sensor/{sensorId}")
-    public SensorReading submitReading(
-            @PathVariable Long sensorId,
-            @RequestBody SensorReading reading) {
-        return sensorReadingService.submitReading(sensorId, reading);
+    @PostMapping("/{sensorId}")
+    public ResponseEntity<SensorReading> createReading(@PathVariable Long sensorId, @RequestBody SensorReading reading) {
+        return ResponseEntity.ok(readingService.createReading(sensorId, reading));
     }
 
     @GetMapping("/{id}")
-    public SensorReading getReading(@PathVariable Long id) {
-        return sensorReadingService.getReading(id);
+    public ResponseEntity<SensorReading> getReading(@PathVariable Long id) {
+        return ResponseEntity.ok(readingService.getReading(id));
     }
 
-    @GetMapping("/sensor/{sensorId}")
-    public List<SensorReading> getReadingsBySensor(
-            @PathVariable Long sensorId) {
-        return sensorReadingService.getReadingsBySensor(sensorId);
+    @GetMapping
+    public ResponseEntity<List<SensorReading>> getAllReadings() {
+        return ResponseEntity.ok(readingService.getAllReadings());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReading(@PathVariable Long id) {
+        readingService.deleteReading(id);
+        return ResponseEntity.noContent().build();
     }
 }

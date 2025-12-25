@@ -2,40 +2,37 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ComplianceThreshold;
 import com.example.demo.service.ComplianceThresholdService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/thresholds")
+@RequestMapping("/api/thresholds")
 public class ComplianceThresholdController {
 
-    private final ComplianceThresholdService thresholdService;
-
-    public ComplianceThresholdController(
-            ComplianceThresholdService thresholdService) {
-        this.thresholdService = thresholdService;
-    }
+    @Autowired
+    private ComplianceThresholdService thresholdService;
 
     @PostMapping
-    public ComplianceThreshold createThreshold(
-            @RequestBody ComplianceThreshold threshold) {
-        return thresholdService.createThreshold(threshold);
+    public ResponseEntity<ComplianceThreshold> createThreshold(@RequestBody ComplianceThreshold threshold) {
+        return ResponseEntity.ok(thresholdService.createThreshold(threshold));
     }
 
     @GetMapping("/{id}")
-    public ComplianceThreshold getThreshold(@PathVariable Long id) {
-        return thresholdService.getThreshold(id);
-    }
-
-    @GetMapping("/sensor/{sensorType}")
-    public ComplianceThreshold getBySensorType(
-            @PathVariable String sensorType) {
-        return thresholdService.getThresholdBySensorType(sensorType);
+    public ResponseEntity<ComplianceThreshold> getThreshold(@PathVariable Long id) {
+        return ResponseEntity.ok(thresholdService.getThreshold(id));
     }
 
     @GetMapping
-    public List<ComplianceThreshold> getAllThresholds() {
-        return thresholdService.getAllThresholds();
+    public ResponseEntity<List<ComplianceThreshold>> getAllThresholds() {
+        return ResponseEntity.ok(thresholdService.getAllThresholds());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteThreshold(@PathVariable Long id) {
+        thresholdService.deleteThreshold(id);
+        return ResponseEntity.noContent().build();
     }
 }
