@@ -2,7 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.SensorReading;
 import com.example.demo.service.SensorReadingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,29 +11,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/readings")
+@Tag(name = "Sensor Reading Controller", description = "Submit and retrieve readings")
 public class SensorReadingController {
 
-    @Autowired
-    private SensorReadingService readingService;
+    private final SensorReadingService readingService;
+
+    public SensorReadingController(SensorReadingService readingService) {
+        this.readingService = readingService;
+    }
 
     @PostMapping("/{sensorId}")
-    public ResponseEntity<SensorReading> createReading(@PathVariable Long sensorId, @RequestBody SensorReading reading) {
-        return ResponseEntity.ok(readingService.createReading(sensorId, reading));
+    @Operation(summary = "Submit a reading for a sensor")
+    public ResponseEntity<SensorReading> submitReading(@PathVariable Long sensorId, @RequestBody SensorReading reading) {
+        return ResponseEntity.ok(readingService.submitReading(sensorId, reading));
+    }
+
+    @GetMapping("/sensor/{sensorId}")
+    @Operation(summary = "Get readings for a specific sensor")
+    public ResponseEntity<List<SensorReading>> getReadingsBySensor(@PathVariable Long sensorId) {
+        return ResponseEntity.ok(readingService.getReadingsBySensor(sensorId));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get reading by ID")
     public ResponseEntity<SensorReading> getReading(@PathVariable Long id) {
         return ResponseEntity.ok(readingService.getReading(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<SensorReading>> getAllReadings() {
-        return ResponseEntity.ok(readingService.getAllReadings());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReading(@PathVariable Long id) {
-        readingService.deleteReading(id);
-        return ResponseEntity.noContent().build();
     }
 }

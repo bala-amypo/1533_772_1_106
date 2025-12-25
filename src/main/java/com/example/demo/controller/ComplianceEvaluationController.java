@@ -1,30 +1,40 @@
 package com.example.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.ComplianceLog;
 import com.example.demo.service.ComplianceEvaluationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/compliance")
+@RequestMapping("/api/compliance")
+@Tag(name = "Compliance Evaluation Controller", description = "Evaluate readings and check logs")
 public class ComplianceEvaluationController {
 
-    @Autowired
-    private ComplianceEvaluationService complianceEvaluationService;
+    private final ComplianceEvaluationService evaluationService;
+
+    public ComplianceEvaluationController(ComplianceEvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
 
     @PostMapping("/evaluate/{readingId}")
-    public ComplianceLog evaluateReading(@PathVariable Long readingId) {
-        return complianceEvaluationService.evaluateReading(readingId);
+    @Operation(summary = "Evaluate a reading against thresholds")
+    public ResponseEntity<ComplianceLog> evaluateReading(@PathVariable Long readingId) {
+        return ResponseEntity.ok(evaluationService.evaluateReading(readingId));
     }
 
-    @GetMapping("/log/{id}")
-    public ComplianceLog getLog(@PathVariable Long id) {
-        return complianceEvaluationService.getLog(id);
+    @GetMapping("/reading/{readingId}")
+    @Operation(summary = "Get compliance logs for a reading")
+    public ResponseEntity<List<ComplianceLog>> getLogsByReading(@PathVariable Long readingId) {
+        return ResponseEntity.ok(evaluationService.getLogsByReading(readingId));
     }
 
-    @GetMapping("/logs/{readingId}")
-    public List<ComplianceLog> getLogsByReading(@PathVariable Long readingId) {
-        return complianceEvaluationService.getLogsByReading(readingId);
+    @GetMapping("/{id}")
+    @Operation(summary = "Get compliance log by ID")
+    public ResponseEntity<ComplianceLog> getLog(@PathVariable Long id) {
+        return ResponseEntity.ok(evaluationService.getLog(id));
     }
 }
