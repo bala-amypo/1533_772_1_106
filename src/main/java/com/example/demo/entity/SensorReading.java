@@ -1,35 +1,77 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "sensor_readings")
 public class SensorReading {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String sensorType;
-    private Double value;
-
     @ManyToOne
     @JoinColumn(name = "sensor_id")
-    private Sensor sensor;  // <-- Add this field
+    private Sensor sensor;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @Column(nullable = false)
+    private Double readingValue;
 
-    public String getSensorType() { return sensorType; }
-    public void setSensorType(String sensorType) { this.sensorType = sensorType; }
+    private LocalDateTime readingTime;
 
-    public Double getValue() { return value; }
-    public void setValue(Double value) { this.value = value; }
+    private String status;
 
-    public Sensor getSensor() { return sensor; }    // <-- Getter
-    public void setSensor(Sensor sensor) { this.sensor = sensor; } // <-- Setter
+    // No-arg constructor
+    public SensorReading() {
+    }
+
+    // Parameterized constructor
+    public SensorReading(Sensor sensor, Double readingValue, LocalDateTime readingTime, String status) {
+        this.sensor = sensor;
+        this.readingValue = readingValue;
+        this.readingTime = readingTime;
+        this.status = status;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+
+    public Double getReadingValue() {
+        return readingValue;
+    }
+
+    public void setReadingValue(Double readingValue) {
+        this.readingValue = readingValue;
+    }
+
+    public LocalDateTime getReadingTime() {
+        return readingTime;
+    }
+
+    public void setReadingTime(LocalDateTime readingTime) {
+        this.readingTime = readingTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

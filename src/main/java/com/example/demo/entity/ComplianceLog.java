@@ -1,31 +1,89 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "compliance_logs")
 public class ComplianceLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String status;
-
     @ManyToOne
     @JoinColumn(name = "reading_id")
-    private SensorReading reading;
+    private SensorReading sensorReading;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @ManyToOne
+    @JoinColumn(name = "threshold_id")
+    private ComplianceThreshold thresholdUsed;
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    private String statusAssigned;
 
-    public SensorReading getReading() { return reading; }
-    public void setReading(SensorReading reading) { this.reading = reading; }
+    private String remarks;
+
+    private LocalDateTime loggedAt;
+
+    // No-arg constructor
+    public ComplianceLog() {
+    }
+
+    // Parameterized constructor
+    public ComplianceLog(SensorReading sensorReading, ComplianceThreshold thresholdUsed, String statusAssigned, String remarks, LocalDateTime loggedAt) {
+        this.sensorReading = sensorReading;
+        this.thresholdUsed = thresholdUsed;
+        this.statusAssigned = statusAssigned;
+        this.remarks = remarks;
+        this.loggedAt = loggedAt;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public SensorReading getSensorReading() {
+        return sensorReading;
+    }
+
+    public void setSensorReading(SensorReading sensorReading) {
+        this.sensorReading = sensorReading;
+    }
+
+    public ComplianceThreshold getThresholdUsed() {
+        return thresholdUsed;
+    }
+
+    public void setThresholdUsed(ComplianceThreshold thresholdUsed) {
+        this.thresholdUsed = thresholdUsed;
+    }
+
+    public String getStatusAssigned() {
+        return statusAssigned;
+    }
+
+    public void setStatusAssigned(String statusAssigned) {
+        this.statusAssigned = statusAssigned;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
+
+    public void setLoggedAt(LocalDateTime loggedAt) {
+        this.loggedAt = loggedAt;
+    }
 }
