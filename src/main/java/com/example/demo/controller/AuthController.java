@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.config.JwtTokenProvider; // Updated Import
+import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.User;
@@ -39,8 +39,8 @@ public class AuthController {
         
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             String token = tokenProvider.generateToken(user.getId(), user.getEmail(), user.getRole());
+            
             AuthResponse response = new AuthResponse();
-            // Manually setting fields as DTO was generic in previous step
             response.setToken(token);
             response.setUserId(user.getId());
             response.setEmail(user.getEmail());

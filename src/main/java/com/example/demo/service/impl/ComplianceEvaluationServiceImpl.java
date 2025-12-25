@@ -30,7 +30,6 @@ public class ComplianceEvaluationServiceImpl implements ComplianceEvaluationServ
 
     @Override
     public ComplianceLog evaluateReading(Long readingId) {
-        // Test 69 requirement: One log per reading (update existing if found)
         List<ComplianceLog> existingLogs = logRepository.findBySensorReading_Id(readingId);
         if (!existingLogs.isEmpty()) {
             return existingLogs.get(0);

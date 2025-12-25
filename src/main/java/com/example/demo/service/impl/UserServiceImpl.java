@@ -17,10 +17,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Modified constructor to match the Test Case (only 1 argument)
+    // Constructor modified to match Test Case (only 1 argument)
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        // Initialize PasswordEncoder internally since the test doesn't inject it
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 

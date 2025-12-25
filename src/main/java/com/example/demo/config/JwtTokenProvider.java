@@ -45,4 +45,12 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    // This method is required by the Test Suite
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }
