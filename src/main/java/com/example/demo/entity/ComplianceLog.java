@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class ComplianceLog {
@@ -10,30 +9,19 @@ public class ComplianceLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean compliant;
-    private LocalDateTime checkedAt;
-
-    @ManyToOne
-    @JoinColumn(name = "reading_id")
-    private SensorReading reading;
-
-    public ComplianceLog() {}
-
-    public ComplianceLog(boolean compliant, LocalDateTime checkedAt, SensorReading reading) {
-        this.compliant = compliant;
-        this.checkedAt = checkedAt;
-        this.reading = reading;
-    }
+    private Long readingId;
+    private String status;
+    private String message;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public boolean isCompliant() { return compliant; }
-    public void setCompliant(boolean compliant) { this.compliant = compliant; }
+    public Long getReadingId() { return readingId; }
+    public void setReadingId(Long readingId) { this.readingId = readingId; }
 
-    public LocalDateTime getCheckedAt() { return checkedAt; }
-    public void setCheckedAt(LocalDateTime checkedAt) { this.checkedAt = checkedAt; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public SensorReading getReading() { return reading; }
-    public void setReading(SensorReading reading) { this.reading = reading; }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
 }
