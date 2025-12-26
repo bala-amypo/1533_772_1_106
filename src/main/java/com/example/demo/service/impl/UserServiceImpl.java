@@ -17,9 +17,10 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor matching the Test Suite requirement (only 1 arg)
+    // Modified Constructor: Only accepts UserRepository (Satisfies Test Suite Setup)
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+        // Initialize internally since Test Suite doesn't inject it
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
